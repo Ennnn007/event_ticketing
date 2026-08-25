@@ -1,0 +1,7 @@
+# Copy this file to terraform.tfvars and fill in your real values.
+# terraform.tfvars itself must NEVER be committed to GitHub (it holds your DB
+# password) - make sure .gitignore excludes it.
+
+key_pair_name       = "your-keypair-name"        # the keypair you already created in EC2 console
+ami_id              = "ami-xxxxxxxxxxxxxxxxx"    # the custom AMI you baked from your configured EC2 instance
+db_master_password  = "ChangeMe123!"             # 8-41 chars, Aurora MySQL password rules apply
