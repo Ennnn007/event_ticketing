@@ -21,11 +21,14 @@ function nav_active($page, $current) {
 <meta name="description" content="<?= htmlspecialchars($pageDescription ?? 'Buy tickets for campus society events - cultural nights, band battles, charity dinners and more.') ?>">
 <title><?= htmlspecialchars($pageTitle ?? 'JLS Event Ticketing') ?></title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=<?= @filemtime(__DIR__ . '/../style.css') ?>">
 </head>
 <body>
 <nav class="navbar">
-<a class="brand" href="index.php"><img src="assets/tarumt-logo.png" alt="TAR UMT" class="brand-logo">JLS Event Ticketing</a>
+<a class="brand" href="index.php"><img src="assets/jls-logo.svg" alt="JLS" class="brand-logo">JLS Event Ticketing</a>
 <div class="nav-links">
 <a href="index.php" class="<?= trim(nav_active('index.php', $currentPage)) ?>">Home</a>
 <a href="events.php" class="<?= trim(nav_active('events.php', $currentPage)) ?>">Events</a>

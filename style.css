@@ -1,25 +1,29 @@
 :root {
   color-scheme: light;
 
-  --accent: #4f46e5;
-  --accent-dark: #3730a3;
-  --accent-soft: #eef2ff;
-  --bg: #f5f6fb;
-  --surface: #ffffff;
-  --surface-alt: #f9fafc;
-  --text: #1c1a28;
-  --text-muted: #6b6b80;
-  --border: #e3e3ee;
+  --accent: #9EB7C6;
+  --accent-dark: #7C99AC;
+  --accent-soft: #BFD8E6;
+  --accent2: #BFD8E6;
+  --accent2-dark: #9EB7C6;
+  --accent2-soft: #E7F1F7;
+  --on-accent: #2A3742;
+  --bg: #E7F1F7;
+  --surface: #FFF2D9;
+  --surface-alt: #F5E6C4;
+  --text: #3A4956;
+  --text-muted: #71889A;
+  --border: #E3D6AC;
   --danger: #c0392b;
   --danger-dark: #a5301f;
   --danger-soft: #fceceb;
-  --success: #0d9488;
-  --success-soft: #e6f6f4;
+  --success: #16a34a;
+  --success-soft: #e9f9ef;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --shadow-sm: 0 1px 2px rgba(20, 15, 40, 0.06);
-  --shadow-md: 0 8px 24px rgba(20, 15, 40, 0.10);
+  --shadow-sm: 0 1px 2px rgba(124, 153, 172, 0.15);
+  --shadow-md: 0 8px 24px rgba(124, 153, 172, 0.22);
 }
 
 /* System preference (used when the user hasn't picked a theme manually) */
@@ -27,23 +31,27 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --accent: #818cf8;
-    --accent-dark: #a5b4fc;
-    --accent-soft: #2e2b4d;
-    --bg: #15131f;
-    --surface: #1d1a2c;
-    --surface-alt: #232032;
-    --text: #f0eef7;
-    --text-muted: #a8a3bd;
-    --border: #332f47;
+    --accent: #9EB7C6;
+    --accent-dark: #7C99AC;
+    --accent-soft: #2A3A44;
+    --accent2: #BFD8E6;
+    --accent2-dark: #9EB7C6;
+    --accent2-soft: #22303A;
+    --on-accent: #2A3742;
+    --bg: #16212B;
+    --surface: #2E2A1F;
+    --surface-alt: #3A3527;
+    --text: #EAF2F7;
+    --text-muted: #9FB2BD;
+    --border: #48412E;
     --danger: #e5695a;
     --danger-dark: #f08a7e;
     --danger-soft: #3a221f;
-    --success: #2dd4bf;
-    --success-soft: #16332e;
+    --success: #4ade80;
+    --success-soft: #163a24;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -51,29 +59,33 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --accent: #818cf8;
-  --accent-dark: #a5b4fc;
-  --accent-soft: #2e2b4d;
-  --bg: #15131f;
-  --surface: #1d1a2c;
-  --surface-alt: #232032;
-  --text: #f0eef7;
-  --text-muted: #a8a3bd;
-  --border: #332f47;
+  --accent: #9EB7C6;
+  --accent-dark: #7C99AC;
+  --accent-soft: #2A3A44;
+  --accent2: #BFD8E6;
+  --accent2-dark: #9EB7C6;
+  --accent2-soft: #22303A;
+  --on-accent: #2A3742;
+  --bg: #16212B;
+  --surface: #2E2A1F;
+  --surface-alt: #3A3527;
+  --text: #EAF2F7;
+  --text-muted: #9FB2BD;
+  --border: #48412E;
   --danger: #e5695a;
   --danger-dark: #f08a7e;
   --danger-soft: #3a221f;
-  --success: #2dd4bf;
-  --success-soft: #16332e;
+  --success: #4ade80;
+  --success-soft: #163a24;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.6);
 }
 
 * { box-sizing: border-box; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   background: var(--bg);
   color: var(--text);
@@ -81,12 +93,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+h1, h2, h3, .navbar .brand, .hero h1, .footer-brand-name {
+  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
+  background: linear-gradient(120deg, var(--accent-dark) 0%, var(--accent) 60%, var(--accent2) 130%);
+  color: var(--on-accent);
   padding: 16px 32px;
   flex-wrap: wrap;
   gap: 12px;
@@ -100,7 +116,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 700;
   font-size: 1.15rem;
   letter-spacing: -0.01em;
@@ -108,12 +124,13 @@ body {
 }
 
 .brand-logo {
-  height: 30px;
+  height: 32px;
   width: auto;
   display: block;
-  background: #fff;
-  border-radius: 4px;
-  padding: 2px 4px;
+  background: linear-gradient(145deg, #FFF2D9 0%, #F5E6C4 100%);
+  border-radius: 9px;
+  padding: 3px 5px;
+  box-shadow: 0 1px 2px rgba(58, 73, 86, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
 }
 
 .nav-links {
@@ -123,7 +140,7 @@ body {
 }
 
 .nav-links a {
-  color: rgba(255,255,255,0.92);
+  color: rgba(58, 73, 86, 0.8);
   text-decoration: none;
   padding: 7px 14px;
   border-radius: var(--radius-sm);
@@ -133,18 +150,18 @@ body {
 }
 
 .nav-links a:hover {
-  background: rgba(255,255,255,0.14);
-  color: #fff;
+  background: rgba(58, 73, 86, 0.1);
+  color: var(--on-accent);
 }
 
 .nav-links a.active {
-  background: rgba(255,255,255,0.22);
-  color: #fff;
+  background: rgba(58, 73, 86, 0.16);
+  color: var(--on-accent);
   font-weight: 600;
 }
 
 .nav-user {
-  color: rgba(255,255,255,0.85);
+  color: rgba(58, 73, 86, 0.75);
   font-size: 0.88rem;
   padding: 7px 6px;
 }
@@ -156,8 +173,8 @@ body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  color: #fff;
+  background: rgba(58, 73, 86, 0.18);
+  color: var(--on-accent);
   font-size: 0.7rem;
   font-weight: 700;
   flex-shrink: 0;
@@ -172,7 +189,7 @@ body {
   margin: 0;
   font: inherit;
   cursor: pointer;
-  color: rgba(255,255,255,0.9);
+  color: rgba(58, 73, 86, 0.85);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -210,9 +227,9 @@ body {
 }
 
 .theme-toggle {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #fff;
+  background: rgba(58, 73, 86, 0.1);
+  border: 1px solid rgba(58, 73, 86, 0.25);
+  color: var(--on-accent);
   width: 32px;
   height: 32px;
   padding: 0;
@@ -223,7 +240,7 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
 }
-.theme-toggle:hover { background: rgba(255,255,255,0.22); }
+.theme-toggle:hover { background: rgba(58, 73, 86, 0.18); }
 
 /* Password field with show/hide toggle */
 .password-field { position: relative; }
@@ -254,17 +271,55 @@ body {
 }
 
 .hero {
+  position: relative;
+  overflow: hidden;
   text-align: center;
-  padding: 56px 24px;
+  padding: 64px 24px;
   margin-bottom: 40px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
+  background: linear-gradient(120deg, var(--accent-dark) 0%, var(--accent) 45%, var(--accent2-dark) 75%, var(--accent2) 100%);
+  color: var(--on-accent);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
 }
 
-.hero h1 { margin: 0 0 10px; font-size: 2.1rem; font-weight: 700; letter-spacing: -0.02em; }
-.hero p { margin: 0; opacity: 0.92; font-size: 1.02rem; }
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 242, 217, 0.45);
+  pointer-events: none;
+}
+
+.hero::before { width: 260px; height: 260px; top: -120px; right: -60px; }
+.hero::after { width: 160px; height: 160px; bottom: -80px; left: 8%; background: rgba(255, 242, 217, 0.6); }
+
+.hero > * { position: relative; z-index: 1; }
+
+.hero-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  background: rgba(58, 73, 86, 0.12);
+  border: 1px solid rgba(58, 73, 86, 0.22);
+  color: var(--on-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero h1 { margin: 0 0 10px; font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; }
+.hero p { margin: 0 0 22px; opacity: 0.82; font-size: 1.04rem; }
+
+.hero .btn {
+  background: #FFF2D9;
+  border: none;
+  color: #3A4956;
+  font-weight: 700;
+}
+.hero .btn:hover { background: #F5E6C4; }
 
 h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; }
 
@@ -422,7 +477,7 @@ input:focus, select:focus, textarea:focus {
   gap: 6px;
   padding: 10px 18px;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -433,7 +488,7 @@ input:focus, select:focus, textarea:focus {
   transition: background 0.15s ease;
 }
 
-.btn:hover, button:hover { background: var(--accent-dark); color: #fff; }
+.btn:hover, button:hover { background: var(--accent-dark); color: var(--on-accent); }
 .btn:disabled, button:disabled { background: var(--surface-alt); color: var(--text-muted); cursor: not-allowed; }
 .btn:disabled:hover, button:disabled:hover { background: var(--surface-alt); color: var(--text-muted); }
 
@@ -735,7 +790,7 @@ section { margin-bottom: 40px; }
   user-select: none;
 }
 .seat:hover { border-color: var(--accent); }
-.seat.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+.seat.selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .seat.booked { background: var(--surface-alt); color: var(--text-muted); border-color: var(--border); cursor: not-allowed; text-decoration: line-through; opacity: 0.6; }
 .seat-legend { display: flex; gap: 16px; margin: 12px 0; font-size: 0.85rem; color: var(--text-muted); }
 .seat-legend-item { display: flex; align-items: center; gap: 6px; }

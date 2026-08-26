@@ -35,11 +35,13 @@ $pageTitle = 'JLS Event Ticketing';
 require 'partials/header.php';
 ?>
 <section class="hero">
+<span class="hero-badge">Campus Events</span>
 <h1>JLS Event Ticketing</h1>
 <p>Grab your tickets for upcoming campus events before they sell out.</p>
+<a href="#events-list" class="btn btn-small">Browse events</a>
 </section>
 
-<section>
+<section id="events-list">
 <h2>Upcoming Events</h2>
 <form method="get" class="filter-bar" id="event-filter-form">
 <label>Search <input type="text" name="q" id="event-search" placeholder="Event name..." value="<?= htmlspecialchars($search) ?>" autocomplete="off"></label>

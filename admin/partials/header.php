@@ -14,11 +14,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($pageTitle ?? 'Admin') ?></title>
 <link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css?v=<?= @filemtime(__DIR__ . '/../../style.css') ?>">
 </head>
 <body>
 <nav class="navbar">
-<a class="brand" href="events.php"><img src="../assets/tarumt-logo.png" alt="TAR UMT" class="brand-logo">Admin &middot; Event Ticketing</a>
+<a class="brand" href="events.php"><img src="../assets/jls-logo.svg" alt="JLS" class="brand-logo">Admin &middot; JLS Event Ticketing</a>
 <div class="nav-links">
 <a href="events.php" class="<?= $currentPage === 'events.php' ? 'active' : '' ?>">Events</a>
 <a href="orders.php" class="<?= $currentPage === 'orders.php' ? 'active' : '' ?>">Orders</a>

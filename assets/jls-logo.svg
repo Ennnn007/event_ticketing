@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="jlsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C99AC"/>
+      <stop offset="55%" stop-color="#9EB7C6"/>
+      <stop offset="100%" stop-color="#BFD8E6"/>
+    </linearGradient>
+    <radialGradient id="jlsShine" cx="30%" cy="22%" r="70%">
+      <stop offset="0%" stop-color="#FFF2D9" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#FFF2D9" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFF2D9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="29" fill="url(#jlsGrad)"/>
+  <circle cx="32" cy="32" r="29" fill="url(#jlsShine)"/>
+  <circle cx="32" cy="32" r="28.5" fill="none" stroke="#FFF2D9" stroke-opacity="0.55" stroke-width="1.3"/>
+  <text x="32" y="41" font-family="'Poppins', 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="700"
+        text-anchor="middle" fill="#3A4956" letter-spacing="-0.5">JLS</text>
+</svg>
