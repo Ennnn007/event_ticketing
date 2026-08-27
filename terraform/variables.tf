@@ -34,6 +34,11 @@ variable "private_subnet_cidrs" {
   default     = ["10.10.11.0/24", "10.10.12.0/24"]
 }
 
+variable "allowed_ssh_cidr" {
+  description = "Your own public IP in CIDR form (e.g. 123.45.67.89/32), used to lock down SSH access instead of 0.0.0.0/0"
+  type        = string
+}
+
 variable "key_pair_name" {
   description = "Name of the EC2 key pair you already created in the AWS console (Academy Lab can't create key pairs cleanly via Terraform, so reuse the one you made)"
   type        = string
@@ -106,3 +111,5 @@ variable "instance_warmup_seconds" {
   type    = number
   default = 300
 }
+
+

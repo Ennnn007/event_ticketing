@@ -29,12 +29,12 @@ resource "aws_security_group" "ec2" {
   description = "Allow SSH and HTTP from the ALB"
   vpc_id      = aws_vpc.main.id
 
-  ingress {
-    description = "SSH"
+    ingress {
+    description = "SSH from my own IP only"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # tighten to your own IP/32 when you can
+    cidr_blocks = [var.allowed_ssh_cidr]
   }
 
   ingress {
