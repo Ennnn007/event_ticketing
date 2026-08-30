@@ -63,6 +63,18 @@ if (!$isSeated && $quantity > $remaining) {
     $error = 'Not enough tickets remaining for this event.';
 }
 
+// Daily booking cap: prevent one account from hogging tickets across many orders in a day
+$dailyLimit = 10;
+$stmt = $conn->prepare('SELECT COALESCE(SUM(quantity), 0) AS today_qty FROM orders WHERE user_id = ? AND DATE(created_at) = CURDATE()');
+$stmt->bind_param('i', $uid);
+$stmt->execute();
+$todayQty = (int)$stmt->get_result()->fetch_assoc()['today_qty'];
+$stmt->close();
+
+if (!$error && ($todayQty + $quantity) > $dailyLimit) {
+    $error = "You've reached the daily booking limit of {$dailyLimit} tickets. You've already booked {$todayQty} today.";
+}
+
 if ($confirmed && !$error) {
     // Payment details are validated for format only - this is a simulated checkout for a
     // teaching project, not a real payment gateway integration. Card/bank details are
