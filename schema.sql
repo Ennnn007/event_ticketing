@@ -46,6 +46,7 @@ CREATE TABLE orders (
   event_id INT NOT NULL,
   quantity INT NOT NULL,
   total_price DECIMAL(10,2) NOT NULL,
+  status ENUM('pending','confirmed','done') NOT NULL DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (event_id) REFERENCES events(id)

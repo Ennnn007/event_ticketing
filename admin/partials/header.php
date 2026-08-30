@@ -23,6 +23,7 @@
 <nav class="navbar">
 <a class="brand" href="events.php"><img src="../assets/jls-logo.svg" alt="JLS" class="brand-logo">Admin &middot; JLS Event Ticketing</a>
 <div class="nav-links">
+<a href="dashboard.php" class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>">Dashboard</a>
 <a href="events.php" class="<?= $currentPage === 'events.php' ? 'active' : '' ?>">Events</a>
 <a href="orders.php" class="<?= $currentPage === 'orders.php' ? 'active' : '' ?>">Orders</a>
 <a href="checkin.php" class="<?= $currentPage === 'checkin.php' ? 'active' : '' ?>">Check-In</a>

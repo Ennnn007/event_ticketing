@@ -129,7 +129,7 @@ if ($confirmed && !$error) {
         } else {
             $total_price = $lockedEvent['ticket_price'] * $quantity;
 
-            $stmt = $conn->prepare('INSERT INTO orders (user_id, event_id, quantity, total_price) VALUES (?, ?, ?, ?)');
+            $stmt = $conn->prepare("INSERT INTO orders (user_id, event_id, quantity, total_price, status) VALUES (?, ?, ?, ?, 'pending')");
             $stmt->bind_param('iiid', $uid, $event_id, $quantity, $total_price);
             $stmt->execute();
             $orderId = $stmt->insert_id;
