@@ -4,13 +4,13 @@ require '../auth.php';
 require_admin();
 
 $orders = $conn->query('
-    SELECT o.id, e.event_name, o.quantity, o.total_price, u.name AS user_name, u.email AS user_email,
+    SELECT o.id, o.status, e.event_name, o.quantity, o.total_price, u.name AS user_name, u.email AS user_email,
            COUNT(t.id) AS checked_in
     FROM orders o
     JOIN events e ON e.id = o.event_id
     JOIN users u ON u.id = o.user_id
     LEFT JOIN tickets t ON t.order_id = o.id AND t.checked_in_at IS NOT NULL
-    GROUP BY o.id, e.event_name, o.quantity, o.total_price, u.name, u.email
+    GROUP BY o.id, o.status, e.event_name, o.quantity, o.total_price, u.name, u.email
     ORDER BY o.created_at DESC
 ')->fetch_all(MYSQLI_ASSOC);
 
@@ -25,7 +25,7 @@ require 'partials/header.php';
 </div>
 <?php else: ?>
 <table>
-<tr><th>Event</th><th>Qty</th><th>Total (RM)</th><th>Bought By</th><th>Email</th><th>Checked In</th><th>Actions</th></tr>
+<tr><th>Event</th><th>Qty</th><th>Total (RM)</th><th>Bought By</th><th>Email</th><th>Checked In</th><th>Status</th><th>Actions</th></tr>
 <?php foreach ($orders as $o): ?>
 <tr>
 <td><?= htmlspecialchars($o['event_name']) ?></td>
@@ -34,6 +34,22 @@ require 'partials/header.php';
 <td><?= htmlspecialchars($o['user_name']) ?></td>
 <td><?= htmlspecialchars($o['user_email']) ?></td>
 <td><?php if ((int)$o['checked_in'] === (int)$o['quantity']): ?><span class="badge badge-good"><?= (int)$o['checked_in'] ?> / <?= (int)$o['quantity'] ?></span><?php else: ?><span class="badge badge-neutral"><?= (int)$o['checked_in'] ?> / <?= (int)$o['quantity'] ?></span><?php endif; ?></td>
+<td>
+<span class="badge badge-neutral"><?= htmlspecialchars($o['status']) ?></span>
+<?php if ($o['status'] === 'pending'): ?>
+<form action="order_status_update.php" method="post" style="display:inline">
+<input type="hidden" name="order_id" value="<?= (int)$o['id'] ?>">
+<input type="hidden" name="status" value="confirmed">
+<button type="submit" class="btn-small">Confirm</button>
+</form>
+<?php elseif ($o['status'] === 'confirmed'): ?>
+<form action="order_status_update.php" method="post" style="display:inline">
+<input type="hidden" name="order_id" value="<?= (int)$o['id'] ?>">
+<input type="hidden" name="status" value="done">
+<button type="submit" class="btn-small">Mark done</button>
+</form>
+<?php endif; ?>
+</td>
 <td>
 <form action="order_cancel.php" method="post" style="display:inline" onsubmit="return confirm('Cancel this order?');">
 <input type="hidden" name="id" value="<?= (int)$o['id'] ?>">
