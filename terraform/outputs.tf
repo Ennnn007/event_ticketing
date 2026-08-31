@@ -20,3 +20,7 @@ output "vpc_id" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.uploads.id
 }
+
+output "db_secret_name" {
+  value = aws_secretsmanager_secret.db_credentials.name
+}
