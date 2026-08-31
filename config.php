@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Aws\SecretsManager\SecretsManagerClient;
+use Aws\Exception\AwsException;
+
 // Use legacy-style error reporting: mysqli functions return false on
 // failure (e.g. a foreign-key violation) instead of throwing an exception,
 // so ordinary "if (!$stmt->execute())" checks work as expected below.
@@ -13,29 +18,38 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
 // ============================================================================
 // Database connection
 // ============================================================================
-// LOCAL / DOCKER (current default below): connects to a MySQL server on this
-// same machine using the credentials below.
+// PRODUCTION (EC2/AWS): DB_SECRET_NAME is set as an Apache SetEnv, pointing
+// at an AWS Secrets Manager secret that holds host/username/password/dbname
+// as JSON. Credentials never live in plaintext on the instance.
 //
-// AWS RDS (Phase 3 of the assignment): once you provision an Amazon RDS
-// MySQL instance, point this app at it. Recommended: set these as
-// environment variables on your EC2 instance / Apache vhost so this file
-// never needs to change between local, EC2, and RDS:
-//
-//   DB_HOST = your-db-identifier.xxxxxxxxxxxx.us-east-1.rds.amazonaws.com
-//   DB_USER = admin              (the master username you set when creating the RDS instance)
-//   DB_PASS = ********           (the master password you set when creating the RDS instance)
-//   DB_NAME = event_ticketing_db
-//
-// Or, to hardcode it instead of using environment variables, replace the
-// fallback values below directly, e.g.:
-//   $host = 'your-db-identifier.xxxxxxxxxxxx.us-east-1.rds.amazonaws.com';
-//   $user = 'admin';
-//   $pass = 'your-rds-master-password';
+// LOCAL / XAMPP fallback: when DB_SECRET_NAME isn't set, falls back to plain
+// DB_HOST/DB_USER/DB_PASS/DB_NAME env vars (or the localhost defaults below),
+// so local development is unaffected.
 // ============================================================================
-$host   = getenv('DB_HOST') ?: 'localhost';
-$user   = getenv('DB_USER') ?: 'root';
-$pass   = getenv('DB_PASS') ?: '';
-$dbname = getenv('DB_NAME') ?: 'event_ticketing_db';
+$secretName = getenv('DB_SECRET_NAME');
+
+if ($secretName) {
+    $client = new SecretsManagerClient([
+        'region'  => getenv('AWS_REGION') ?: 'us-east-1',
+        'version' => '2017-10-17',
+    ]);
+
+    try {
+        $result = $client->getSecretValue(['SecretId' => $secretName]);
+        $secret = json_decode($result['SecretString'], true);
+        $host   = $secret['host'];
+        $user   = $secret['username'];
+        $pass   = $secret['password'];
+        $dbname = $secret['dbname'];
+    } catch (AwsException $e) {
+        die('Failed to load DB credentials from Secrets Manager: ' . $e->getAwsErrorMessage());
+    }
+} else {
+    $host   = getenv('DB_HOST') ?: 'localhost';
+    $user   = getenv('DB_USER') ?: 'root';
+    $pass   = getenv('DB_PASS') ?: '';
+    $dbname = getenv('DB_NAME') ?: 'event_ticketing_db';
+}
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
