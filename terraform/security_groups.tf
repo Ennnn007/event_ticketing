@@ -29,7 +29,7 @@ resource "aws_security_group" "ec2" {
   description = "Allow SSH and HTTP from the ALB"
   vpc_id      = aws_vpc.main.id
 
-    ingress {
+  ingress {
     description = "SSH from my own IP only"
     from_port   = 22
     to_port     = 22

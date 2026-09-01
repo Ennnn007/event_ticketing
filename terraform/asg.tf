@@ -11,9 +11,9 @@ resource "aws_autoscaling_group" "app" {
   # check fails, not just an EC2 status check). EBS-volume health checks are
   # a newer console option; if this specific attribute isn't recognized by
   # your provider version, drop it and we'll rely on the ELB check alone.
-  health_check_type          = "ELB"
-  health_check_grace_period  = var.instance_warmup_seconds
-  default_instance_warmup    = var.instance_warmup_seconds
+  health_check_type         = "ELB"
+  health_check_grace_period = var.instance_warmup_seconds
+  default_instance_warmup   = var.instance_warmup_seconds
 
   launch_template {
     id      = aws_launch_template.app.id

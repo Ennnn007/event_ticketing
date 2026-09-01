@@ -24,11 +24,11 @@ resource "aws_rds_cluster" "main" {
 }
 
 resource "aws_rds_cluster_instance" "main" {
-  identifier         = "${var.project_name}-aurora-instance-1"
-  cluster_identifier = aws_rds_cluster.main.id
-  engine             = aws_rds_cluster.main.engine
-  engine_version      = aws_rds_cluster.main.engine_version
-  instance_class     = var.db_instance_class
+  identifier           = "${var.project_name}-aurora-instance-1"
+  cluster_identifier   = aws_rds_cluster.main.id
+  engine               = aws_rds_cluster.main.engine
+  engine_version       = aws_rds_cluster.main.engine_version
+  instance_class       = var.db_instance_class
   db_subnet_group_name = aws_db_subnet_group.main.name
-  publicly_accessible = false
+  publicly_accessible  = false
 }
