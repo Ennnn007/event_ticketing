@@ -78,3 +78,16 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
+
+# S3 Gateway VPC Endpoint: lets instances in the private subnets reach S3
+# (needed for photo uploads via the AWS SDK) without a NAT Gateway, which
+# would cost ongoing Lab budget. Gateway-type endpoints are free.
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.private.id]
+  tags = {
+    Name = "${var.project_name}-s3-endpoint"
+  }
+}
