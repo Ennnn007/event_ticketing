@@ -29,26 +29,37 @@ jobs:
           php-version: '8.2'
           extensions: mysqli
 
-      - name: Wait for MySQL and load schema
+      - name: Load database schema
         run: |
           for i in {1..10}; do mysqladmin ping -h 127.0.0.1 -u root -proot --silent && break; sleep 3; done
           mysql -h 127.0.0.1 -u root -proot event_ticketing_db < schema.sql
 
-      - name: Start website and tunnel
+      - name: Start website
         env:
           DB_HOST: 127.0.0.1
           DB_USER: root
           DB_PASS: root
           DB_NAME: event_ticketing_db
         run: |
-          php -S 0.0.0.0:8000 &
-          sleep 2
+          nohup php -S 0.0.0.0:8000 > php.log 2>&1 &
+          sleep 3
+
+      - name: Download cloudflared
+        run: |
           curl -Lo cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
           chmod +x cloudflared
-          ./cloudflared tunnel --url http://localhost:8000 &
+
+      - name: Start tunnel and show URL
+        run: |
+          ./cloudflared tunnel --url http://localhost:8000 > tunnel.log 2>&1 &
+          echo "等待网址生成中..."
+          for i in {1..30}; do
+            if grep -o 'https://[a-zA-Z0-9.-]*\.trycloudflare\.com' tunnel.log; then
+              break
+            fi
+            sleep 2
+          done
           echo "=================================================="
-          echo "网站正在启动中，网址会显示在下面几秒后的 log 里"
+          echo "上面这行 https://xxxx.trycloudflare.com 就是你的网站网址"
           echo "=================================================="
-          sleep 20
-          echo "如果上面还没看到网址，往上滚动找 trycloudflare.com 那一行"
           sleep 1200
