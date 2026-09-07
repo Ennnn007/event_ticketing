@@ -1,8 +1,6 @@
 name: Live Demo
-
 on:
   workflow_dispatch:
-
 jobs:
   demo:
     runs-on: ubuntu-latest
@@ -19,40 +17,34 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: mysqli
-
       - name: Load database schema
         run: |
           for i in {1..10}; do mysqladmin ping -h 127.0.0.1 -u root -proot --silent && break; sleep 3; done
           mysql -h 127.0.0.1 -u root -proot event_ticketing_db < schema.sql
-
-            - name: Start website
+      - name: Start website
         env:
           DB_HOST: 127.0.0.1
           DB_USER: root
           DB_PASS: root
           DB_NAME: event_ticketing_db
-
+        run: |
           composer install --no-interaction --no-dev || true
           nohup php -S 0.0.0.0:8000 > php.log 2>&1 &
           sleep 3
           curl -s http://localhost:8000/ -o /dev/null -w "HTTP status: %{http_code}\n"
           echo "===== php.log ====="
           cat php.log
-
       - name: Download cloudflared
         run: |
           curl -Lo cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
           chmod +x cloudflared
-
       - name: Start tunnel and show URL
         run: |
           ./cloudflared tunnel --url http://localhost:8000 > tunnel.log 2>&1 &
