@@ -7,6 +7,12 @@ terraform {
       version = "~> 5.30"
     }
   }
+
+  backend "s3" {
+    bucket = "jls-event-ticketing-tfstate-626109929618"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 # --- AWS Academy Learner Lab note ---
