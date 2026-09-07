@@ -40,7 +40,7 @@ jobs:
           DB_USER: root
           DB_PASS: root
           DB_NAME: event_ticketing_db
-        run: |
+
           composer install --no-interaction --no-dev || true
           nohup php -S 0.0.0.0:8000 > php.log 2>&1 &
           sleep 3
