@@ -123,7 +123,7 @@ resource "aws_vpc_endpoint" "ssm" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "${var.project_name}-ssm-endpoint" }
+  tags                = { Name = "${var.project_name}-ssm-endpoint" }
 }
 
 resource "aws_vpc_endpoint" "ssmmessages" {
@@ -133,7 +133,7 @@ resource "aws_vpc_endpoint" "ssmmessages" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "${var.project_name}-ssmmessages-endpoint" }
+  tags                = { Name = "${var.project_name}-ssmmessages-endpoint" }
 }
 
 resource "aws_vpc_endpoint" "ec2messages" {
@@ -143,5 +143,5 @@ resource "aws_vpc_endpoint" "ec2messages" {
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
-  tags = { Name = "${var.project_name}-ec2messages-endpoint" }
+  tags                = { Name = "${var.project_name}-ec2messages-endpoint" }
 }
