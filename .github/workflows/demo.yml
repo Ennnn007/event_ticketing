@@ -1,0 +1,123 @@
+name: Live Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: event_ticketing_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli
+          
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: Sync real photos from S3
+        run: |
+          mkdir -p uploads
+          aws s3 sync s3://jls-event-ticketing-uploads-626109929618/ ./uploads/ || echo "S3 sync skipped/empty"
+
+      - name: Set up SSH key and open temporary tunnel access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key.pem
+          chmod 400 ~/.ssh/deploy_key.pem
+
+          RUNNER_IP=$(curl -s https://checkip.amazonaws.com)
+          echo "Runner IP: $RUNNER_IP"
+          aws ec2 authorize-security-group-ingress \
+            --group-id sg-00a9bb4c0c8935e96 \
+            --protocol tcp --port 22 \
+            --cidr ${RUNNER_IP}/32 || echo "Rule may already exist"
+
+          BASTION_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=db-check-temp" "Name=instance-state-name,Values=running" \
+            --query "Reservations[].Instances[].PublicIpAddress" --output text)
+          echo "Bastion IP: $BASTION_IP"
+          echo "BASTION_IP=$BASTION_IP" >> $GITHUB_ENV
+
+      - name: Dump real database via bastion tunnel
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key.pem \
+            -f -N -L 3307:jls-event-ticketing-aurora.cluster-cwlevpcaz2wn.us-east-1.rds.amazonaws.com:3306 \
+            ec2-user@${{ env.BASTION_IP }}
+          sleep 5
+          mysqldump -h 127.0.0.1 -P 3307 -u aws_admin -p'Admin_123' event_ticketing_db > realdata.sql
+          echo "Dump size:"
+          wc -l realdata.sql
+
+      - name: Load real data into local MySQL
+        run: |
+          for i in {1..10}; do mysqladmin ping -h 127.0.0.1 -u root -proot --silent && break; sleep 3; done
+          mysql -h 127.0.0.1 -u root -proot event_ticketing_db < realdata.sql
+
+      - name: Revoke temporary SSH access
+        if: always()
+        run: |
+          RUNNER_IP=$(curl -s https://checkip.amazonaws.com)
+          aws ec2 revoke-security-group-ingress \
+            --group-id sg-00a9bb4c0c8935e96 \
+            --protocol tcp --port 22 \
+            --cidr ${RUNNER_IP}/32 || echo "Already removed"
+
+      - name: Start website
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASS: root
+          DB_NAME: event_ticketing_db
+        run: |
+          nohup php -S 0.0.0.0:8000 > php.log 2>&1 &
+          sleep 3
+
+      - name: Download cloudflared
+        run: |
+          curl -Lo cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          chmod +x cloudflared
+
+      - name: Start tunnel and show URL
+        run: |
+          ./cloudflared tunnel --url http://localhost:8000 > tunnel.log 2>&1 &
+          echo "等待网址生成中..."
+          for i in {1..30}; do
+            if grep -o 'https://[a-zA-Z0-9.-]*\.trycloudflare\.com' tunnel.log; then
+              break
+            fi
+            sleep 2
+          done
+          echo "=================================================="
+          echo "上面这行 https://xxxx.trycloudflare.com 就是你的网站网址"
+          echo "=================================================="
+          sleep 1200
+
+      - name: Show PHP error log (debug)
+        if: always()
+        run: cat php.log || echo "no php.log found"
