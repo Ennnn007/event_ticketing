@@ -114,3 +114,7 @@ jobs:
           echo "上面这行 https://xxxx.trycloudflare.com 就是你的网站网址"
           echo "=================================================="
           sleep 1200
+
+      - name: Show PHP error log (debug)
+        if: always()
+        run: cat php.log || echo "no php.log found"
