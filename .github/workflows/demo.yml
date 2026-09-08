@@ -28,9 +28,10 @@ jobs:
         with:
           php-version: '8.2'
           extensions: mysqli
-          
+
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction
+        working-directory: event_ticketing
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -42,8 +43,8 @@ jobs:
 
       - name: Sync real photos from S3
         run: |
-          mkdir -p uploads
-          aws s3 sync s3://jls-event-ticketing-uploads-626109929618/ ./uploads/ || echo "S3 sync skipped/empty"
+          mkdir -p event_ticketing/uploads
+          aws s3 sync s3://jls-event-ticketing-uploads-626109929618/ ./event_ticketing/uploads/ || echo "S3 sync skipped/empty"
 
       - name: Set up SSH key and open temporary tunnel access
         run: |
@@ -95,7 +96,7 @@ jobs:
           DB_PASS: root
           DB_NAME: event_ticketing_db
         run: |
-          nohup php -S 0.0.0.0:8000 > php.log 2>&1 &
+          nohup php -S 0.0.0.0:8000 -t event_ticketing > php.log 2>&1 &
           sleep 3
 
       - name: Download cloudflared
@@ -106,7 +107,7 @@ jobs:
       - name: Start tunnel and show URL
         run: |
           ./cloudflared tunnel --url http://localhost:8000 > tunnel.log 2>&1 &
-          echo "等待网址生成中..."
+          echo "Waiting for URL..."
           for i in {1..30}; do
             if grep -o 'https://[a-zA-Z0-9.-]*\.trycloudflare\.com' tunnel.log; then
               break
@@ -114,7 +115,7 @@ jobs:
             sleep 2
           done
           echo "=================================================="
-          echo "上面这行 https://xxxx.trycloudflare.com 就是你的网站网址"
+          echo "The URL above is your live site"
           echo "=================================================="
           sleep 1200
 
