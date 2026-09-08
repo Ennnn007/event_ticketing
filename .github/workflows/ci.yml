@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: ./event_ticketing/terraform
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
     needs: [php-lint, terraform-check]
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: ./event_ticketing/terraform
     env:
       TF_VAR_key_pair_name: ${{ secrets.TF_VAR_key_pair_name }}
       TF_VAR_ami_id: ${{ secrets.TF_VAR_ami_id }}
