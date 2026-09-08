@@ -18,7 +18,7 @@ output "vpc_id" {
 }
 
 output "s3_bucket_name" {
-  value = aws_s3_bucket.uploads.id
+  value = data.aws_s3_bucket.uploads.id
 }
 
 output "db_secret_name" {

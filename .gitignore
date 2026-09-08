@@ -1,0 +1,9 @@
+# Terraform state (now stored remotely in S3, never commit locally)
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfstate.*.backup
+terraform/*.tfvars
+!terraform/terraform.tfvars.example
+terraform/terraform_*.zip
+terraform/LICENSE.txt

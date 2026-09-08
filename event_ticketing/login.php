@@ -14,11 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($user && password_verify($password, $user['password_hash'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-        $_SESSION['is_admin'] = (bool)$user['is_admin'];
-        header('Location: ' . ($user['is_admin'] ? 'admin/events.php' : 'index.php'));
-        exit;
+        if ($user['is_admin']) {
+            $error = 'This is an admin account. Please use the <a href="admin/login.php">admin login page</a>.';
+        } else {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['is_admin'] = false;
+            header('Location: index.php');
+            exit;
+        }
     } else {
         $error = 'Invalid email or password.';
     }
@@ -29,7 +33,7 @@ require 'partials/header.php';
 ?>
 <div class="auth-card">
 <h1>Login</h1>
-<?php if ($error): ?><p class="alert alert-error"><?= htmlspecialchars($error) ?></p><?php endif; ?>
+<?php if ($error): ?><p class="alert alert-error"><?= $error ?></p><?php endif; ?>
 <form method="post">
 <label>Email <span class="required-mark">*</span> <input type="email" name="email" required></label>
 <label>Password <span class="required-mark">*</span>
