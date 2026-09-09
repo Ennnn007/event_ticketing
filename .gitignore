@@ -1,9 +1,9 @@
-# Terraform state (now stored remotely in S3, never commit locally)
-terraform/.terraform/
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/terraform.tfstate.*.backup
-terraform/*.tfvars
-!terraform/terraform.tfvars.example
-terraform/terraform_*.zip
-terraform/LICENSE.txt
+﻿# Terraform state (now stored remotely in S3, never commit locally)
+event_ticketing/terraform/.terraform/
+event_ticketing/terraform/terraform.tfstate
+event_ticketing/terraform/terraform.tfstate.backup
+event_ticketing/terraform/terraform.tfstate.*.backup
+event_ticketing/terraform/*.tfvars
+!event_ticketing/terraform/terraform.tfvars.example
+event_ticketing/terraform/terraform_*.zip
+event_ticketing/terraform/LICENSE.txt
