@@ -20,7 +20,7 @@ function nav_active($page, $current) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="<?= htmlspecialchars($pageDescription ?? 'Buy tickets for campus society events - cultural nights, band battles, charity dinners and more.') ?>">
 <title><?= htmlspecialchars($pageTitle ?? 'JLS Event Ticketing') ?></title>
-<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="icon" type="image/svg+xml" href="assets/jls-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
