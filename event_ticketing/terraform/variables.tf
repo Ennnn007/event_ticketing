@@ -93,12 +93,12 @@ variable "asg_desired_capacity" {
 
 variable "asg_min_size" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "asg_max_size" {
   type    = number
-  default = 2
+  default = 4
 }
 
 variable "target_tracking_cpu_target" {
