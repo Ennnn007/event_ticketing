@@ -22,11 +22,6 @@ resource "aws_launch_template" "app" {
     fi
     chown -R apache:apache /var/www/html/uploads
     chmod -R 755 /var/www/html/uploads
-    cat > /var/www/html/admin/login.php <<'PHPEOF'
-  <?php
-  header('Location: /login.php');
-  exit;
-  PHPEOF
     systemctl restart httpd
   EOF
   )
