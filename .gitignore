@@ -7,3 +7,10 @@ event_ticketing/terraform/*.tfvars
 !event_ticketing/terraform/terraform.tfvars.example
 event_ticketing/terraform/terraform_*.zip
 event_ticketing/terraform/LICENSE.txt
+
+# Composer dependencies (installed via composer install, not committed)
+event_ticketing/vendor/
+
+# Stray tfstate that sometimes lands directly under event_ticketing/ (not in terraform/)
+event_ticketing/terraform.tfstate
+event_ticketing/terraform/.terraform.lock.hcl
